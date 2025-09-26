@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Form with JS Array</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      margin: 20px 0;
+    }
+
+    .main-container {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      border: 2px solid #ccc;
+      width: 450px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .list-container {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f9f9f9;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <h2>Student Form</h2>
+    <form id="studentForm">
+      <label for="studentName">Name</label>
+      <input type="text" id="studentName" placeholder="Enter your name" required>
+
+      <label for="studentMarks">Marks</label>
+      <input type="number" id="studentMarks" placeholder="Enter your marks" required>
+
+      <button type="submit">Add Student</button>
+    </form>
+
+    <button id="showAllBtn">Show All Students</button>
+    <button id="showPassedBtn">Show Passed Students</button>
+    <button id="showAverageBtn">Show Average Marks</button>
+    <button id="showTopperBtn">Show Topper Student</button>
+
+    <div class="list-container">
+      <h3>Results:</h3>
+      <ul id="resultsList"></ul>
+    </div>
+  </div>
+
+  <script>
+    // Array to store students
+    const students = [];
+
+    const form = document.getElementById("studentForm");
+    const resultsList = document.getElementById("resultsList");
+
+    // Function to add student to array
+    function addStudent(name, marks) {
+      students.push({ name, marks: Number(marks) });
+    }
+
+    // Normal function to find topper
+    function findTopper() {
+      if(students.length === 0) return null;
+      let topper = students[0];
+      students.forEach(s => {
+        if(s.marks > topper.marks) topper = s;
+      });
+      return topper;
+    }
+
+    // Callback function example: display results
+    function displayResults(arr) {
+      resultsList.innerHTML = '';
+      if(arr.length === 0){
+        resultsList.innerHTML = '<li>No students to display</li>';
+        return;
+      }
+      arr.forEach(item => {
+        const li = document.createElement('li');
+        if(item.name !== undefined && item.marks !== undefined){
+          li.textContent = `${item.name} - ${item.marks}`;
+        } else {
+          li.textContent = item;
+        }
+        resultsList.appendChild(li);
+      });
+    }
+
+    // Form submit handler
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("studentName").value.trim();
+      const marks = document.getElementById("studentMarks").value.trim();
+
+      if(name === "" || marks === "") {
+        alert("Please enter both name and marks!");
+        return;
+      }
+
+      addStudent(name, marks);
+      form.reset();
+      alert(`${name} added successfully!`);
+    });
+
+    // Show all students
+    document.getElementById("showAllBtn").addEventListener("click", () => {
+      const allStudents = students.map(s => `${s.name} - ${s.marks}`);
+      displayResults(allStudents);
+    });
+
+    // Show passed students
+    document.getElementById("showPassedBtn").addEventListener("click", () => {
+      const passedStudents = students.filter(s => s.marks >= 40).map(s => `${s.name} - ${s.marks}`);
+      displayResults(passedStudents);
+    });
+
+    // Show average marks
+    document.getElementById("showAverageBtn").addEventListener("click", () => {
+      if(students.length === 0){
+        displayResults(["No students to calculate average"]);
+        return;
+      }
+      const avg = students.reduce((acc, s) => acc + s.marks, 0) / students.length;
+      displayResults([`Average Marks: ${avg.toFixed(2)}`]);
+    });
+
+    // Show topper student
+    document.getElementById("showTopperBtn").addEventListener("click", () => {
+      const topper = findTopper();
+      if(topper){
+        displayResults([`Topper: ${topper.name} - ${topper.marks}`]);
+      } else {
+        displayResults(["No students added yet"]);
+      }
+    });
+  </script>
+</body>
+</html>

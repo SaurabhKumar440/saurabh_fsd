@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .main-container {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      border: 2px solid #ccc;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* Containers for the lists */
+    .lists-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+      gap: 10px;
+    }
+
+    .list-box {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fafafa;
+      width: 48%;
+      max-height: 250px;
+      overflow-y: auto;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .list-box h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f9f9f9;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .delBtn {
+      background: none;
+      border: none;
+      color: red;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .delBtn:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <h2>Student Form</h2>
+    <form id="studentForm">
+      <label for="studentName">Name</label>
+      <input type="text" id="studentName" placeholder="Enter your name" required>
+
+      <label for="studentMarks">Marks</label>
+      <input type="number" id="studentMarks" placeholder="Enter your marks" required>
+
+      <button type="submit">Add Student</button>
+    </form>
+
+    <!-- Two separate lists -->
+    <div class="lists-container">
+      <div class="list-box">
+        <h3>Student Names</h3>
+        <ul id="studentNameList"></ul>
+      </div>
+
+      <div class="list-box">
+        <h3>Marks</h3>
+        <ul id="marksList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("studentForm");
+    const studentNameList = document.getElementById("studentNameList");
+    const marksList = document.getElementById("marksList");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("studentName").value.trim();
+      const marks = document.getElementById("studentMarks").value.trim();
+
+      if (!name || !marks) {
+        alert("Please enter both name and marks!");
+        return;
+      }
+
+      // Create list items
+      const nameLi = document.createElement("li");
+      nameLi.textContent = name;
+
+      const marksLi = document.createElement("li");
+      marksLi.textContent = marks;
+
+      // Delete button
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "❌";
+      delBtn.className = "delBtn";
+
+      delBtn.addEventListener("click", function() {
+        studentNameList.removeChild(nameLi);
+        marksList.removeChild(marksLi);
+      });
+
+      // Add delete button to name list only
+      nameLi.appendChild(delBtn);
+
+      // Append to lists
+      studentNameList.appendChild(nameLi);
+      marksList.appendChild(marksLi);
+
+      // Reset form
+      form.reset();
+    });
+  </script>
+</body>
+</html>

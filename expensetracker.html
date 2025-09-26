@@ -1,112 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker</title>
-    <style>
-        .container {
-            display: flex;
-            gap: 40px;
-            margin-top: 20px;
-        }
-        .list-box {
-            border: 1px solid #ccc;
-            padding: 16px;
-            width: 220px;
-            min-height: 200px;
-            background: #f9f9f9;
-        }
-        .list-box h2 {
-            margin-top: 0;
-            font-size: 1.1em;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-        .delBtn {
-            margin-left: 10px;
-            color: red;
-            cursor: pointer;
-            background: none;
-            border: none;
-            font-size: 1em;
-        }
-        .expense-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <style>
+    /* General page styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    /* Main container */
+    .main-container {
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 30px;
+      width: 90%;
+      max-width: 700px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    /* Input Section */
+    .input-section {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="date"],
+    input[type="text"],
+    input[type="number"] {
+      padding: 10px;
+      width: 150px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s ease;
+    }
+
+    #addExpenseBtn {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    #addExpenseBtn:hover {
+      background-color: #45a049;
+    }
+
+    #totalBtn {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    #totalBtn:hover {
+      background-color: #1976D2;
+    }
+
+    /* Expense list container */
+    .list-box {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      background: #fafafa;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Delete button styling */
+    .delBtn {
+      color: red;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 16px;
+      transition: transform 0.2s ease;
+    }
+
+    .delBtn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Total Section */
+    .total-section {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .total-value {
+      color: #2196F3;
+    }
+  </style>
 </head>
 <body>
+  <div class="main-container">
     <h1>Expense Tracker</h1>
-    <input type="text" id="expenseNameInput" placeholder="Expense name">
-    <input type="number" id="expenseValueInput" placeholder="Expense value">
-    <button id="addExpenseBtn">Add Expense</button>
 
-    <div class="container">
-        <div class="list-box">
-            <h2>Expense Names</h2>
-            <ul id="expenseNameList"></ul>
-        </div>
-        <div class="list-box">
-            <h2>Expense Values</h2>
-            <ul id="expenseValueList"></ul>
-        </div>
+    <!-- Input Section -->
+    <div class="input-section">
+      <input type="date" id="expenseDateInput">
+      <input type="text" id="expenseNameInput" placeholder="Expense Name">
+      <input type="number" id="expenseValueInput" placeholder="Expense Value">
+      <button id="addExpenseBtn">Add Expense</button>
+      <button id="totalBtn">Calculate Total</button>
     </div>
 
-    <script>
-        const expenseNameInput = document.getElementById("expenseNameInput");
-        const expenseValueInput = document.getElementById("expenseValueInput");
-        const addExpenseBtn = document.getElementById("addExpenseBtn");
-        const expenseNameList = document.getElementById("expenseNameList");
-        const expenseValueList = document.getElementById("expenseValueList");
+    <!-- List Display -->
+    <div class="list-box">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Expense Name</th>
+            <th>Expense Value</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="expenseTableBody"></tbody>
+      </table>
+    </div>
 
-        addExpenseBtn.addEventListener("click", addExpense);
+    <!-- Total Display -->
+    <div class="total-section">
+      Total Expenses: <span class="total-value" id="totalValue">0</span>
+    </div>
+  </div>
 
-        function addExpense() {
-            const name = expenseNameInput.value.trim();
-            const value = expenseValueInput.value.trim();
+  <script>
+    // DOM elements
+    const expenseDateInput = document.getElementById("expenseDateInput");
+    const expenseNameInput = document.getElementById("expenseNameInput");
+    const expenseValueInput = document.getElementById("expenseValueInput");
+    const addExpenseBtn = document.getElementById("addExpenseBtn");
+    const totalBtn = document.getElementById("totalBtn");
+    const expenseTableBody = document.getElementById("expenseTableBody");
+    const totalValueDisplay = document.getElementById("totalValue");
 
-            if (name === "" || value === "") {
-                alert("Please enter both name and value");
-                return;
-            }
+    // Add expense
+    addExpenseBtn.addEventListener("click", () => {
+      const date = expenseDateInput.value.trim();
+      const name = expenseNameInput.value.trim();
+      const value = expenseValueInput.value.trim();
 
-            // Name list item
-            const nameLi = document.createElement("li");
-            nameLi.className = "expense-item";
-            nameLi.textContent = name;
+      if (!date || !name || !value) {
+        alert("Please enter Date, Expense Name, and Expense Value.");
+        return;
+      }
 
-            // Value list item
-            const valueLi = document.createElement("li");
-            valueLi.className = "expense-item";
-            valueLi.textContent = value;
+      // Create new table row
+      const row = document.createElement("tr");
 
-            // Delete button (removes both)
-            const delBtn = document.createElement("button");
-            delBtn.textContent = "❌";
-            delBtn.className = "delBtn";
-            delBtn.addEventListener("click", function() {
-                expenseNameList.removeChild(nameLi);
-                expenseValueList.removeChild(valueLi);
-            });
+      row.innerHTML = `
+        <td>${date}</td>
+        <td>${name}</td>
+        <td>${value}</td>
+        <td><button class="delBtn">❌</button></td>
+      `;
 
-            nameLi.appendChild(delBtn);
-            valueLi.appendChild(delBtn.cloneNode(true));
-            valueLi.lastChild.addEventListener("click", function() {
-                expenseNameList.removeChild(nameLi);
-                expenseValueList.removeChild(valueLi);
-            });
+      // Delete button functionality
+      row.querySelector(".delBtn").addEventListener("click", () => {
+        expenseTableBody.removeChild(row);
+      });
 
-            expenseNameList.appendChild(nameLi);
-            expenseValueList.appendChild(valueLi);
+      // Add to table
+      expenseTableBody.appendChild(row);
 
-            expenseNameInput.value = "";
-            expenseValueInput.value = "";
-        }
-    </script>
+      // Clear inputs
+      expenseDateInput.value = "";
+      expenseNameInput.value = "";
+      expenseValueInput.value = "";
+    });
+
+    // Calculate total
+    totalBtn.addEventListener("click", () => {
+      let total = 0;
+      const rows = expenseTableBody.querySelectorAll("tr");
+
+      rows.forEach(row => {
+        const value = parseFloat(row.cells[2].textContent);
+        total += isNaN(value) ? 0 : value;
+      });
+
+      totalValueDisplay.textContent = total.toFixed(2);
+    });
+  </script>
 </body>
 </html>

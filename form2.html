@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    student Name
+    <input type="text" id="name" placeholder="Enter Name">
+    student marks
+    <input type="number" id="marks" placeholder="Enter Marks">
+    <button onclick="addStudent()">Add Student</button>
+    <ul id="studentList"></ul>
+    <script>
+        let students = [];
+        
+            const name = document.getElementById('name').value;
+            const marks = document.getElementById('marks').value;
+            const student = { name, marks };
+            addStudent.addEventListener("click", addStudent);
+             background-color: #28a745;
+            students.push(student);
+            console.log(students);
+            document.getElementById('name').value = '';
+            document.getElementById('marks').value = '';
+            function addStudent() {
+                const li = document.createElement('li');
+                li.textContent = `Name: ${student.name}, Marks: ${student.marks}`;
+                document.getElementById('studentList').appendChild(li);
+            }
+
+        
+    </script>
+</body>
+</html>
