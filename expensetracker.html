@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+        .container {
+            display: flex;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        .list-box {
+            border: 1px solid #ccc;
+            padding: 16px;
+            width: 220px;
+            min-height: 200px;
+            background: #f9f9f9;
+        }
+        .list-box h2 {
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        .delBtn {
+            margin-left: 10px;
+            color: red;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1em;
+        }
+        .expense-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <h1>Expense Tracker</h1>
+    <input type="text" id="expenseNameInput" placeholder="Expense name">
+    <input type="number" id="expenseValueInput" placeholder="Expense value">
+    <button id="addExpenseBtn">Add Expense</button>
+
+    <div class="container">
+        <div class="list-box">
+            <h2>Expense Names</h2>
+            <ul id="expenseNameList"></ul>
+        </div>
+        <div class="list-box">
+            <h2>Expense Values</h2>
+            <ul id="expenseValueList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const expenseNameInput = document.getElementById("expenseNameInput");
+        const expenseValueInput = document.getElementById("expenseValueInput");
+        const addExpenseBtn = document.getElementById("addExpenseBtn");
+        const expenseNameList = document.getElementById("expenseNameList");
+        const expenseValueList = document.getElementById("expenseValueList");
+
+        addExpenseBtn.addEventListener("click", addExpense);
+
+        function addExpense() {
+            const name = expenseNameInput.value.trim();
+            const value = expenseValueInput.value.trim();
+
+            if (name === "" || value === "") {
+                alert("Please enter both name and value");
+                return;
+            }
+
+            // Name list item
+            const nameLi = document.createElement("li");
+            nameLi.className = "expense-item";
+            nameLi.textContent = name;
+
+            // Value list item
+            const valueLi = document.createElement("li");
+            valueLi.className = "expense-item";
+            valueLi.textContent = value;
+
+            // Delete button (removes both)
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "❌";
+            delBtn.className = "delBtn";
+            delBtn.addEventListener("click", function() {
+                expenseNameList.removeChild(nameLi);
+                expenseValueList.removeChild(valueLi);
+            });
+
+            nameLi.appendChild(delBtn);
+            valueLi.appendChild(delBtn.cloneNode(true));
+            valueLi.lastChild.addEventListener("click", function() {
+                expenseNameList.removeChild(nameLi);
+                expenseValueList.removeChild(valueLi);
+            });
+
+            expenseNameList.appendChild(nameLi);
+            expenseValueList.appendChild(valueLi);
+
+            expenseNameInput.value = "";
+            expenseValueInput.value = "";
+        }
+    </script>
+</body>
+</html>
