@@ -1,10 +1,23 @@
 import React from "react";
-const about = () => {
+import "./css/About.css";
+
+const About = () => {
   return (
-    <div>
-        <h2>Welcome to the About Page</h2>
-        <p>This is the about page of our React Router demo application.</p>
-    </div>
+    <section className="about">
+      <h2 className="about__title">About Us</h2>
+      <p className="about__text">This demo app shows basic routing with Home, About and Contact pages.</p>
+      <div className="about__cards">
+        <article className="about__card">
+          <h4>Our Mission</h4>
+          <p>Build small, focused UI examples to learn React Router.</p>
+        </article>
+        <article className="about__card">
+          <h4>Our Values</h4>
+          <p>Clarity, simplicity, and hands-on learning.</p>
+        </article>
+      </div>
+    </section>
   );
 }
-export default about;
+
+export default About;

@@ -1,0 +1,42 @@
+/* Styles for Contact component */
+.contact {
+  max-width: 640px;
+  margin: 24px auto;
+  padding: 18px;
+}
+.contact__title {
+  margin-bottom: 6px;
+}
+.contact__text {
+  margin-bottom: 14px;
+  color: #59656f;
+}
+.contact__form {
+  display: grid;
+  gap: 10px;
+}
+.contact__label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+}
+.contact__input,
+.contact__textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d7dde2;
+  border-radius: 6px;
+  margin-top: 6px;
+}
+.contact__button {
+  width: 120px;
+  padding: 8px 12px;
+  border: none;
+  background: #2b7cff;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.contact__button:hover {
+  background: #235fd9;
+}
